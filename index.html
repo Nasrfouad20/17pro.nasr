@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>iPhone Odyssey | The Ultimate Visual Experience | 11 → ∞</title>
+  <!-- Premium Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 Pro Style -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- GSAP for butter-smooth animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+  <!-- Three.js for mind-blowing 3D -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+      }
+    }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: #000000;
+      overflow-x: hidden;
+      color: #fff;
+      cursor: none;
+    }
+
+    /* Custom Premium Cursor */
+    .cursor-follower {
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 215, 0, 0.8);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 99999;
+      filter: blur(2px);
+      transition: transform 0.08s linear;
+      mix-blend-mode: difference;
+    }
+
+    .cursor-follower-glow {
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle, rgba(255,215,0,0.4), transparent);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 99998;
+      transition: transform 0.12s linear;
+    }
+
+    /* Hero Section - Mind Blowing */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-video-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+
+    .glitch-text {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(3rem, 12vw, 7rem);
+      font-weight: 900;
+      position: relative;
+      text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.05em -0.025em 0 rgba(0,255,0,0.75);
+      animation: glitch 3s infinite;
+    }
+
+    @keyframes glitch {
+      0%, 100% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.05em -0.025em 0 rgba(0,255,0,0.75); }
+      25% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.05em 0 rgba(0,255,0,0.75); }
+      50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), -0.05em -0.025em 0 rgba(0,255,0,0.75); }
+      75% { text-shadow: -0.025em 0 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75); }
+    }
+
+    /* 3D Cards with Holographic Effect */
+    .cards-container-3d {
+      perspective: 2000px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3rem;
+      padding: 6rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .card-3d {
+      width: 320px;
+      height: 480px;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateY(0deg) rotateX(0deg);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+      border-radius: 30px;
+    }
+
+    .card-3d:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 30px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card-front {
+      background: linear-gradient(135deg, rgba(20,20,40,0.9), rgba(5,5,15,0.95));
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,215,0,0.3);
+      box-shadow: 0 25px 45px rgba(0,0,0,0.5);
+    }
+
+    .card-back {
+      background: linear-gradient(135deg, rgba(255,100,50,0.9), rgba(255,50,100,0.9));
+      transform: rotateY(180deg);
+      color: white;
+    }
+
+    /* Interactive Particle Network */
+    #particle-network {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 3D Sphere Gallery */
+    .sphere-gallery {
+      height: 600px;
+      position: relative;
+      margin: 5rem 0;
+      overflow: hidden;
+    }
+
+    /* Animated Text Sections */
+    .reveal-text {
+      font-size: 4rem;
+      text-align: center;
+      margin: 4rem 0;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    /* Interactive Comparison Slider */
+    .compare-slider {
+      max-width: 1200px;
+      margin: 4rem auto;
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: ew-resize;
+    }
+
+    .compare-images {
+      position: relative;
+      width: 100%;
+      height: 500px;
+    }
+
+    .compare-before, .compare-after {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    .compare-before {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .compare-after {
+      background: linear-gradient(135deg, #ff6b6b, #ffd700);
+      z-index: 2;
+      width: 50%;
+      overflow: hidden;
+    }
+
+    .slider-handle {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      background: white;
+      z-index: 3;
+      cursor: ew-resize;
+      box-shadow: 0 0 20px rgba(255,255,255,0.8);
+    }
+
+    /* Audio Visualizer */
+    .audio-visualizer {
+      height: 200px;
+      background: rgba(0,0,0,0.5);
+      margin: 4rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Holographic Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(20px);
+      z-index: 100000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      max-width: 80%;
+      max-height: 80%;
+      text-align: center;
+      animation: hologramPulse 2s infinite;
+    }
+
+    @keyframes hologramPulse {
+      0%, 100% { text-shadow: 0 0 10px cyan, 0 0 20px blue; }
+      50% { text-shadow: 0 0 30px cyan, 0 0 50px magenta; }
+    }
+
+    /* Loading Animation Ultra */
+    .loader-super {
+      position: fixed;
+      inset: 0;
+      background: black;
+      z-index: 1000000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .loader-super svg {
+      width: 100px;
+      height: 100px;
+      animation: rotateLoader 1s linear infinite;
+    }
+
+    @keyframes rotateLoader {
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .card-3d { width: 260px; height: 400px; }
+      .reveal-text { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor-follower" id="cursorFollower"></div>
+<div class="cursor-follower-glow" id="cursorGlow"></div>
+
+<div class="loader-super" id="superLoader">
+  <svg viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="45" fill="none" stroke="#ffd700" stroke-width="3" stroke-dasharray="283" stroke-dashoffset="75">
+      <animate attributeName="stroke-dashoffset" from="283" to="0" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <text x="50" y="55" text-anchor="middle" fill="#ffd700" font-size="12" font-family="Orbitron">LOADING</text>
+  </svg>
+  <p style="margin-top: 2rem; color: #ffd700; font-family: monospace;">INITIALIZING HOLOGRAPHIC MATRIX...</p>
+</div>
+
+<div class="content" style="position: relative; z-index: 2;">
+  <!-- Hero Section with Video Background -->
+  <section class="hero">
+    <canvas id="heroCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
+    <div class="hero-content">
+      <div class="glitch-text" data-text="IPHONE ODYSSEY">IPHONE ODYSSEY</div>
+      <p style="font-size: 1.5rem; margin-top: 2rem; letter-spacing: 10px;">11 → 17 PRO MAX</p>
+      <p style="font-size: 1rem; margin-top: 1rem; opacity: 0.8;">Beyond Reality • Beyond Innovation</p>
+      <button id="exploreBtn" style="margin-top: 3rem; padding: 1rem 2rem; background: linear-gradient(45deg, #ff6b6b, #ffd700); border: none; border-radius: 50px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s;">EXPLORE THE FUTURE →</button>
+    </div>
+  </section>
+
+  <!-- 3D Cards Section -->
+  <div style="text-align: center; margin-top: 5rem;">
+    <h2 class="reveal-text" id="cardsTitle">THE EVOLUTION</h2>
+  </div>
+  <div class="cards-container-3d" id="cards3DContainer"></div>
+
+  <!-- 3D Sphere Gallery -->
+  <div class="sphere-gallery" id="sphereGallery"></div>
+
+  <!-- Interactive Comparison Slider -->
+  <div style="text-align: center; margin: 4rem 0;">
+    <h2 class="reveal-text">BEFORE & AFTER</h2>
+    <p style="margin-bottom: 2rem;">Drag to compare iPhone 11 vs iPhone 17 Pro Max</p>
+  </div>
+  <div class="compare-slider" id="compareSlider">
+    <div class="compare-images">
+      <div class="compare-before">
+        <div>
+          <i class="fas fa-mobile-alt" style="font-size: 5rem;"></i>
+          <p>iPhone 11</p>
+          <p style="font-size: 0.8rem;">LCD Display • Dual Camera</p>
+        </div>
+      </div>
+      <div class="compare-after" id="compareAfter">
+        <div>
+          <i class="fas fa-gem" style="font-size: 5rem;"></i>
+          <p>iPhone 17 Pro Max</p>
+          <p style="font-size: 0.8rem;">Holographic • AI • 10G</p>
+        </div>
+      </div>
+      <div class="slider-handle" id="sliderHandle"></div>
+    </div>
+  </div>
+
+  <!-- Audio Visualizer (Visual only, no actual audio needed) -->
+  <div class="audio-visualizer">
+    <canvas id="audioCanvas" style="width: 100%; height: 100%;"></canvas>
+  </div>
+
+  <!-- Stats with Holographic Effect -->
+  <div style="display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap; padding: 4rem 2rem;">
+    <div class="stat-holo" data-target="7" style="text-align: center;">
+      <div class="stat-number-holo" style="font-size: 4rem; font-weight: 900; background: linear-gradient(45deg, cyan, magenta); -webkit-background-clip: text; background-clip: text; color: transparent;">0</div>
+      <div>Generations</div>
+    </div>
+    <div class="stat-holo" data-target="50" style="text-align: center;">
+      <div class="stat-number-holo" style="font-size: 4rem; font-weight: 900; background: linear-gradient(45deg, yellow, orange); -webkit-background-clip: text; background-clip: text; color: transparent;">0</div>
+      <div>Billion Transactions</div>
+    </div>
+    <div class="stat-holo" data-target="100" style="text-align: center;">
+      <div class="stat-number-holo" style="font-size: 4rem; font-weight: 900; background: linear-gradient(45deg, lime, cyan); -webkit-background-clip: text; background-clip: text; color: transparent;">0</div>
+      <div>Terabytes Storage</div>
+    </div>
+  </div>
+
+  <!-- Newsletter -->
+  <div style="text-align: center; padding: 5rem; background: linear-gradient(180deg, rgba(0,0,0,0.8), rgba(20,0,30,0.9));">
+    <h2>JOIN THE <span style="color: #ffd700;">FUTURE</span></h2>
+    <p style="margin: 1rem;">Be the first to experience next-gen innovations</p>
+    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+      <input type="email" id="newsEmail" placeholder="Enter your email" style="padding: 1rem; width: 300px; border-radius: 50px; border: none; background: rgba(255,255,255,0.1); color: white;">
+      <button id="subBtn" style="padding: 1rem 2rem; border-radius: 50px; border: none; background: linear-gradient(45deg, #ff6b6b, #ffd700); cursor: pointer;">SUBSCRIBE</button>
+    </div>
+  </div>
+
+  <footer style="text-align: center; padding: 3rem; background: rgba(0,0,0,0.9);">
+    <i class="fab fa-apple" style="font-size: 2rem;"></i>
+    <p>© 2025 iPhone Odyssey | The Ultimate Visual Experience</p>
+    <p style="font-size: 0.8rem; margin-top: 1rem;">3D Interactive Experience • Holographic UI • Neural Animation Engine</p>
+  </footer>
+</div>
+
+<!-- Modal for product details -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <i class="fas fa-times" style="position: absolute; top: 20px; right: 30px; font-size: 2rem; cursor: pointer;" onclick="closeModal()"></i>
+    <div id="modalInfo"></div>
+  </div>
+</div>
+
+<script type="module">
+  import * as THREE from 'three';
+  import { OrbitControls } from 'https://unpkg.com/three@0.128.0/examples/jsm/controls/OrbitControls.js';
+
+  // Initialize everything after load
+  window.addEventListener('load', async () => {
+    // Remove loader
+    setTimeout(() => {
+      const loader = document.getElementById('superLoader');
+      if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.remove(), 1000);
+      }
+    }, 2500);
+
+    // Initialize GSAP ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger, TextPlugin);
+    
+    // Hero Canvas Animation (3D Particle Wave)
+    const heroCanvas = document.getElementById('heroCanvas');
+    const heroScene = new THREE.Scene();
+    const heroCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const heroRenderer = new THREE.WebGLRenderer({ canvas: heroCanvas, alpha: true });
+    heroRenderer.setSize(window.innerWidth, window.innerHeight);
+    
+    const particleCount = 2000;
+    const particlesGeometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i++) {
+      positions[i*3] = (Math.random() - 0.5) * 200;
+      positions[i*3+1] = (Math.random() - 0.5) * 100;
+      positions[i*3+2] = (Math.random() - 0.5) * 100;
+    }
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const particlesMaterial = new THREE.PointsMaterial({ color: 0xffaa44, size: 0.2, transparent: true, blending: THREE.AdditiveBlending });
+    const particleSystem = new THREE.Points(particlesGeometry, particlesMaterial);
+    heroScene.add(particleSystem);
+    
+    heroCamera.position.z = 50;
+    
+    function animateHero() {
+      requestAnimationFrame(animateHero);
+      particleSystem.rotation.y += 0.002;
+      particleSystem.rotation.x += 0.001;
+      heroRenderer.render(heroScene, heroCamera);
+    }
+    animateHero();
+    
+    window.addEventListener('resize', () => {
+      heroCamera.aspect = window.innerWidth / window.innerHeight;
+      heroCamera.updateProjectionMatrix();
+      heroRenderer.setSize(window.innerWidth, window.innerHeight);
+    });
+    
+    // Generate 3D Cards
+    const iphones = [
+      { name: "iPhone 11", year: "2019", chip: "A13", camera: "Dual 12MP", icon: "fa-mobile-alt", color: "#A5E6FF" },
+      { name: "12 Pro Max", year: "2020", chip: "A14", camera: "Triple 12MP", icon: "fa-camera", color: "#CFE7FF" },
+      { name: "13 Pro Max", year: "2021", chip: "A15", camera: "Cinematic", icon: "fa-dharmachakra", color: "#FFE0A3" },
+      { name: "14 Pro Max", year: "2022", chip: "A16", camera: "48MP Main", icon: "fa-chart-line", color: "#C5A3FF" },
+      { name: "15 Pro Max", year: "2023", chip: "A17 Pro", camera: "Titanium", icon: "fa-crown", color: "#B0FFC0" },
+      { name: "16 Pro Max", year: "2024", chip: "A18 Ultra", camera: "AI Enhanced", icon: "fa-microchip", color: "#FFAFCC" },
+      { name: "17 Pro Max", year: "2025", chip: "A19 Bionic", camera: "Holographic", icon: "fa-gem", color: "#FFD966" }
+    ];
+    
+    const container = document.getElementById('cards3DContainer');
+    iphones.forEach((phone, idx) => {
+      const card = document.createElement('div');
+      card.className = 'card-3d';
+      card.style.animationDelay = `${idx * 0.1}s`;
+      card.innerHTML = `
+        <div class="card-inner">
+          <div class="card-front">
+            <i class="fas ${phone.icon}" style="font-size: 4rem; margin-bottom: 1rem; color: ${phone.color};"></i>
+            <h2 style="font-size: 1.8rem;">${phone.name}</h2>
+            <p style="margin: 0.5rem;"><i class="fas fa-microchip"></i> ${phone.chip}</p>
+            <p><i class="fas fa-camera"></i> ${phone.camera}</p>
+            <p style="margin-top: 1rem;"><i class="fas fa-calendar"></i> ${phone.year}</p>
+          </div>
+          <div class="card-back">
+            <i class="fas fa-star" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+            <h3>${phone.name}</h3>
+            <p style="margin: 1rem;">Experience the revolution of ${phone.year}</p>
+            <button class="card-detail-btn" data-phone='${JSON.stringify(phone)}' style="padding: 0.5rem 1rem; background: rgba(255,255,255,0.2); border: none; border-radius: 20px; cursor: pointer;">View Details</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+    
+    // 3D Sphere Gallery
+    const sphereContainer = document.getElementById('sphereGallery');
+    const sphereScene = new THREE.Scene();
+    const sphereCamera = new THREE.PerspectiveCamera(75, sphereContainer.clientWidth / 600, 0.1, 1000);
+    const sphereRenderer = new THREE.WebGLRenderer({ alpha: true });
+    sphereRenderer.setSize(sphereContainer.clientWidth, 600);
+    sphereContainer.appendChild(sphereRenderer.domElement);
+    
+    const geometry = new THREE.SphereGeometry(5, 64, 64);
+    const textureCanvas = document.createElement('canvas');
+    textureCanvas.width = 1024;
+    textureCanvas.height = 1024;
+    const ctx = textureCanvas.getContext('2d');
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, 1024, 1024);
+    ctx.fillStyle = '#ffd700';
+    ctx.font = 'Bold 60px Arial';
+    ctx.fillText('IPHONE', 300, 400);
+    ctx.font = '40px Arial';
+    ctx.fillText('11 → 17', 350, 500);
+    const texture = new THREE.CanvasTexture(textureCanvas);
+    const material = new THREE.MeshBasicMaterial({ map: texture });
+    const sphere = new THREE.Mesh(geometry, material);
+    sphereScene.add(sphere);
+    
+    sphereCamera.position.z = 15;
+    
+    function animateSphere() {
+      requestAnimationFrame(animateSphere);
+      sphere.rotation.y += 0.005;
+      sphere.rotation.x += 0.003;
+      sphereRenderer.render(sphereScene, sphereCamera);
+    }
+    animateSphere();
+    
+    window.addEventListener('resize', () => {
+      if (sphereContainer) {
+        sphereRenderer.setSize(sphereContainer.clientWidth, 600);
+        sphereCamera.aspect = sphereContainer.clientWidth / 600;
+        sphereCamera.updateProjectionMatrix();
+      }
+    });
+    
+    // Audio Visualizer (fake but beautiful)
+    const audioCanvas = document.getElementById('audioCanvas');
+    const audioCtx = audioCanvas.getContext('2d');
+    audioCanvas.width = window.innerWidth;
+    audioCanvas.height = 200;
+    
+    function drawVisualizer() {
+      requestAnimationFrame(drawVisualizer);
+      audioCtx.clearRect(0, 0, audioCanvas.width, audioCanvas.height);
+      const bars = 100;
+      for (let i = 0; i < bars; i++) {
+        const height = Math.random() * 150 + 20;
+        const gradient = audioCtx.createLinearGradient(0, 200 - height, 0, 200);
+        gradient.addColorStop(0, '#ff6b6b');
+        gradient.addColorStop(1, '#ffd700');
+        audioCtx.fillStyle = gradient;
+        audioCtx.fillRect(i * (audioCanvas.width / bars), 200 - height, (audioCanvas.width / bars) - 2, height);
+      }
+    }
+    drawVisualizer();
+    
+    // Comparison Slider
+    const slider = document.getElementById('sliderHandle');
+    const compareAfter = document.getElementById('compareAfter');
+    let isDragging = false;
+    
+    slider.addEventListener('mousedown', () => isDragging = true);
+    window.addEventListener('mouseup', () => isDragging = false);
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const rect = document.querySelector('.compare-images').getBoundingClientRect();
+      let x = e.clientX - rect.left;
+      x = Math.min(Math.max(x, 0), rect.width);
+      const percent = (x / rect.width) * 100;
+      compareAfter.style.width = `${percent}%`;
+      slider.style.left = `${percent}%`;
+    });
+    
+    // Stats Counter with GSAP
+    const statNumbers = document.querySelectorAll('.stat-number-holo');
+    statNumbers.forEach((stat, idx) => {
+      const target = parseInt(stat.parentElement.getAttribute('data-target'));
+      gsap.fromTo(stat, 
+        { innerText: 0 },
+        {
+          innerText: target,
+          duration: 2,
+          scrollTrigger: {
+            trigger: stat,
+            start: "top 80%",
+            end: "bottom 60%",
+            scrub: 1,
+          },
+          onUpdate: function() {
+            stat.innerText = Math.floor(this.targets()[0].innerText);
+          }
+        }
+      );
+    });
+    
+    // Text Reveal Animation
+    gsap.utils.toArray('.reveal-text').forEach(text => {
+      gsap.fromTo(text, 
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.5,
+          scrollTrigger: {
+            trigger: text,
+            start: "top 80%",
+            end: "bottom 60%",
+            scrub: 1,
+          }
+        }
+      );
+    });
+    
+    // Cursor Animation
+    const cursorFollower = document.getElementById('cursorFollower');
+    const cursorGlow = document.getElementById('cursorGlow');
+    
+    document.addEventListener('mousemove', (e) => {
+      cursorFollower.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+      cursorGlow.style.transform = `translate(${e.clientX - 40}px, ${e.clientY - 40}px)`;
+    });
+    
+    // Card detail modal
+    window.openModal = (phoneData) => {
+      const modal = document.getElementById('productModal');
+      const modalInfo = document.getElementById('modalInfo');
+      modalInfo.innerHTML = `
+        <i class="fas ${phoneData.icon}" style="font-size: 5rem; margin-bottom: 1rem;"></i>
+        <h2 style="font-size: 3rem;">${phoneData.name}</h2>
+        <p style="margin: 1rem;"><strong>Year:</strong> ${phoneData.year}</p>
+        <p><strong>Chip:</strong> ${phoneData.chip}</p>
+        <p><strong>Camera:</strong> ${phoneData.camera}</p>
+        <p style="margin-top: 2rem;">A revolutionary device that changed the world.</p>
+      `;
+      modal.style.display = 'flex';
+    };
+    
+    window.closeModal = () => {
+      document.getElementById('productModal').style.display = 'none';
+    };
+    
+    document.querySelectorAll('.card-detail-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const phoneData = JSON.parse(btn.getAttribute('data-phone'));
+        window.openModal(phoneData);
+      });
+    });
+    
+    // Explore button
+    document.getElementById('exploreBtn').addEventListener('click', () => {
+      document.getElementById('cards3DContainer').scrollIntoView({ behavior: 'smooth' });
+    });
+    
+    // Subscribe button
+    document.getElementById('subBtn').addEventListener('click', () => {
+      const email = document.getElementById('newsEmail').value;
+      if (email) {
+        alert(`✨ Welcome to the future! ${email} has been notified.`);
+      } else {
+        alert('Please enter your email to join the revolution!');
+      }
+    });
+    
+    // Particle Network (simple canvas)
+    const particleCanvas = document.createElement('canvas');
+    particleCanvas.id = 'particle-network';
+    particleCanvas.style.position = 'fixed';
+    particleCanvas.style.top = '0';
+    particleCanvas.style.left = '0';
+    particleCanvas.style.width = '100%';
+    particleCanvas.style.height = '100%';
+    particleCanvas.style.pointerEvents = 'none';
+    particleCanvas.style.zIndex = '1';
+    document.body.appendChild(particleCanvas);
+    
+    const netCtx = particleCanvas.getContext('2d');
+    particleCanvas.width = window.innerWidth;
+    particleCanvas.height = window.innerHeight;
+    
+    let particles = [];
+    for (let i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * particleCanvas.width,
+        y: Math.random() * particleCanvas.height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+      });
+    }
+    
+    function drawNetwork() {
+      netCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+      netCtx.fillStyle = 'rgba(255,215,0,0.3)';
+      for (let p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > particleCanvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > particleCanvas.height) p.vy *= -1;
+        netCtx.beginPath();
+        netCtx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+        netCtx.fill();
+        
+        for (let p2 of particles) {
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            netCtx.beginPath();
+            netCtx.moveTo(p.x, p.y);
+            netCtx.lineTo(p2.x, p2.y);
+            netCtx.strokeStyle = `rgba(255,215,0,${1 - dist / 100})`;
+            netCtx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(drawNetwork);
+    }
+    drawNetwork();
+    
+    window.addEventListener('resize', () => {
+      particleCanvas.width = window.innerWidth;
+      particleCanvas.height = window.innerHeight;
+      audioCanvas.width = window.innerWidth;
+    });
+  });
+</script>
+</body>
+</html>
